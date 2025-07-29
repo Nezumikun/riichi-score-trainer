@@ -3,6 +3,7 @@ import { UButton } from '#components';
 
   let handArray = ref<Tile[]>([]);
   let melds = ref<Tile[][]>([]);
+  let winningTile = ref("");
   await getNextGameResult();
   
   async function getNextGameResult() {
@@ -15,6 +16,7 @@ import { UButton } from '#components';
       for (const meld of gameResult.melds) {
         melds.value.push(Tile.parseString(meld));
       }
+      winningTile.value = gameResult.winningTile
     }
   }
 </script>
@@ -25,7 +27,13 @@ import { UButton } from '#components';
       Index
     </h1>
     <div>
-    {{ JSON.stringify(handArray) }} {{ JSON.stringify(melds) }}
+    handArray {{ JSON.stringify(handArray) }}
+    </div>
+    <div>
+    melds {{ JSON.stringify(melds) }}
+    </div>
+    <div>
+    winningTile {{ JSON.stringify(Tile.parseString(winningTile)) }}
     </div>
     <div>
       <div class="hand">
@@ -53,7 +61,7 @@ img.tile {
   padding: 2px;
   width: 80px;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 12px;
   border-color: Gray;
   border: thin solid grey;
 } 

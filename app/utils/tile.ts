@@ -1,15 +1,27 @@
-export class Tile {
-  suit: string;
+class TileWithoutSuit {
   nominal: string;
   isCalled: boolean;
+  isFlipped: boolean;
 
-  constructor(suit: string, nominal: string, isCalled: boolean) {
-    this.suit = suit;
+  constructor(nominal : string, isCalled : boolean = false, isFlipped : boolean = false) {
     this.nominal = nominal;
     this.isCalled = isCalled;
+    this.isFlipped = isFlipped
+  }
+}
+
+export class Tile extends TileWithoutSuit {
+  suit: string;
+
+  constructor(suit : string, nominal : string, isCalled : boolean = false, isFlipped : boolean = false) {
+    super(nominal, isCalled, isFlipped);
+    this.suit = suit;
   }
 
   getImageName() : string {
+    if (this.isFlipped) {
+      return "/tiles/Back.svg"
+    }
     if (this.suit !== 'h') {
       const suitName = (this.suit === 's') ? 'Sou' : (this.suit === 'm') ? 'Man' : 'Pin'
       const number = (this.nominal === '0') ? '5' : this.nominal
@@ -41,24 +53,27 @@ export class Tile {
   static parseString(tileString : string) : Tile[] {
     const returnArray : Tile[] = [];
     let flagCalledTile : boolean = false;
-    const buffer : [string, boolean][] = [];
+    let flagFlippedTile : boolean = false;
+    const buffer : TileWithoutSuit[] = [];
     for (const item of tileString) {
       if ((item === 'm') || (item === 'p') || (item === 's') || (item === 'h')) {
         while (true) {
           const bufferItem = buffer.shift();
           if (bufferItem === undefined) break;
-          returnArray.push(new Tile(item, bufferItem[0], bufferItem[1]));
+          returnArray.push(new Tile(item, bufferItem.nominal, bufferItem.isCalled, bufferItem.isFlipped));
         }
         continue;
       }
-      if (flagCalledTile) {
-        buffer.push([item, true]);
+      else if (item === 'c') {
+        flagCalledTile = true;
+      }
+      else if (item === 'f') {
+        flagFlippedTile = true;
+      }
+      else {
+        buffer.push(new TileWithoutSuit(item, flagCalledTile, flagFlippedTile));
         flagCalledTile = false;
-        continue;
-      } else {
-        flagCalledTile = (item === 'c');
-        if (flagCalledTile) continue;
-        buffer.push([item, false]);
+        flagFlippedTile = false;
       }
     }
     return returnArray;
