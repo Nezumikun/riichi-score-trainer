@@ -1,12 +1,22 @@
 <script setup lang="ts">
-  const { data } = await $fetch('/api/getRandomHand')
-  console.log(data)
-  const handArray = Tile.parseString(data.hand);
-  const melds: Tile[][] = [];
-  for (const meld of data.melds) {
-    melds.push(Tile.parseString(meld));
-  }
+import { UButton } from '#components';
+
+  let handArray = ref<Tile[]>([]);
+  let melds = ref<Tile[][]>([]);
+  await getNextGameResult();
   
+  async function getNextGameResult() {
+    const fetchData = await $fetch<GameResultRequest>('/api/getRandomGameResult')
+    console.log(fetchData)
+    if (fetchData.data !== null) {
+      const gameResult : GameResult = fetchData.data
+      handArray.value = Tile.parseString(gameResult.hand);
+      melds.value = []
+      for (const meld of gameResult.melds) {
+        melds.value.push(Tile.parseString(meld));
+      }
+    }
+  }
 </script>
 
 <template>
@@ -17,18 +27,23 @@
     <div>
     {{ JSON.stringify(handArray) }} {{ JSON.stringify(melds) }}
     </div>
-    <div class="hand">
-      <template v-for="tile in handArray">
-        <img :src="tile.getImageName()" :class="tile.getCssClasses()" />
-      </template>
-    </div>
-    <template v-for="meld in melds">
-      <div class="meld">
-        <template v-for="tile in meld">
+    <div>
+      <div class="hand">
+        <template v-for="tile in handArray">
           <img :src="tile.getImageName()" :class="tile.getCssClasses()" />
         </template>
       </div>
-    </template>
+      <template v-for="meld in melds">
+        <div class="meld">
+          <template v-for="tile in meld">
+            <img :src="tile.getImageName()" :class="tile.getCssClasses()" />
+          </template>
+        </div>
+      </template>
+    </div>
+    <div>
+      <UButton loading-auto color="secondary" @click="getNextGameResult()">Следующий результат</UButton>
+    </div>
   </div>
 </template>
 
