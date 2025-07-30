@@ -45,17 +45,17 @@
     -->
     <div class="text-center w-full">
       <div class="hand">
-        <template v-for="tile in handArray">
-          <img :src="tile.getImageName()" :class="tile.getCssClasses()" />
+        <template v-for="tile in handArray" :key="tile">
+          <img :src="tile.getImageName()" :class="tile.getCssClasses()">
         </template>
       </div>
       <div class="tile-winning">
-        <img :src="winningTile.getImageName()" class="tile tile-winning" />
+        <img :src="winningTile.getImageName()" class="tile tile-winning">
       </div>
       <div class="melds">
         <template v-for="meld in melds">
-          <template v-for="tile in meld">
-            <img :src="tile.getImageName()" :class="tile.getCssClasses()" />
+          <template v-for="tile in meld" :key="tile">
+            <img :src="tile.getImageName()" :class="tile.getCssClasses()">
           </template>
         </template>
       </div>
@@ -95,6 +95,6 @@ div.hand {
   display: inline-block;
 }
 div.main {
-  /* background-color: gainsboro; */
+  background-color: transparent; 
 }
 </style>
