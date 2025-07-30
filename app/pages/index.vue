@@ -47,11 +47,11 @@
       </div>
     </div>
     <div class="winning-parameters grid grid-cols-5 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
-      <div>Ветер раунда</div>
-      <div>Ветер места</div>
-      <div>Индикатор доры</div>
-      <div>Индикатор урадоры</div>
-      <div>Параметры выигрыша</div>
+      <div>{{ $t("wind_of_round") }}</div>
+      <div>{{ $t("wind_of_seat") }}</div>
+      <div>{{ $t("dora_indicator") }}</div>
+      <div>{{ $t("uradora_indicator") }}</div>
+      <div>{{ $t("wining_parameters") }}</div>
       <div><img :src="hand.roundWind.getImageName()" :class="hand.roundWind.getCssClasses()"></div>
       <div><img :src="hand.seatWind.getImageName()" :class="hand.seatWind.getCssClasses()"></div>
       <div>
@@ -64,19 +64,19 @@
           <img :src="uraDoraIndicator.getImageName()" :class="uraDoraIndicator.getCssClasses()">
         </template>
         <template v-if="!hand.uraDoraIndicators.length">
-          нет
+          {{ $t("no") }}
         </template>
       </div>
       <div>
         <div class="grid grid-cols-1">
-          <div>Риичи: {{ hand.isRiichi ? 'да' : 'нет' }}</div>
-          <div>Цумо: {{ hand.isTsumo ? 'да' : 'нет' }}</div>
+          <div>{{ $t("riichi_option") }}: {{ hand.isRiichi ? $t("yes") : $t("no") }}</div>
+          <div>{{ $t("tsumo_option") }}: {{ hand.isTsumo ? $t("yes") : $t("no") }}</div>
         </div>
       </div>
     </div>
     <div class="winning-details grid grid-cols-2 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
-      <div>Яку</div>
-      <div>Фу</div>
+      <div>{{ $t("Yaku") }}</div>
+      <div>{{ $t("Fu") }}</div>
       <div>
         <div class="grid grid-cols-2">
           <template v-for="yaku in hand.yaku" :key="yaku">
@@ -89,19 +89,19 @@
         </div>
       </div>
       <div>
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-5">
           <template v-for="fu in hand.fuDetails" :key="fu">
-            <div>{{ fu.reason }}</div>
+            <div class="col-span-4">{{ $t('fu_' + fu.reason) }}</div>
             <div class=" text-right">{{ fu.fu }}</div>
           </template>
-          <div class="winning-details-summary col-span-2 text-right">
+          <div class="winning-details-summary col-span-5 text-right">
             {{ hand.fu  }}
           </div>
         </div>
       </div>
     </div>
     <div class="text-center w-full pt-4">
-      <UButton loading-auto color="secondary" @click="getNextGameResult()">Следующий результат</UButton>
+      <UButton loading-auto color="secondary" @click="getNextGameResult()">{{ $t('next_hand') }}</UButton>
     </div>
   </div>
 </template>
