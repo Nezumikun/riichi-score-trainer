@@ -2,11 +2,14 @@
   const handArray = ref<Tile[]>([]);
   const melds = ref<Tile[][]>([]);
   const winningTile = ref<Tile>(new Tile("", ""));
+  const roundWind = ref<Tile>(new Tile("", ""));
   const GUID = ref("");
-  await getNextGameResult();
+  const data = ref<GameResultRequest>()
+    await getNextGameResult();
   
   async function getNextGameResult() {
     const fetchData = await $fetch<GameResultRequest>('/api/getRandomGameResult')
+    data.value = fetchData
     console.log(fetchData)
     if (fetchData.data !== null) {
       const gameResult : GameResult = fetchData.data
@@ -23,6 +26,7 @@
         melds.value.push(Tile.parseString(meld));
       }
       winningTile.value = _winingTile
+      roundWind.value = Tile.parseWindOfRound(gameResult.roundWind)
     }
   }
 </script>
@@ -59,6 +63,9 @@
           </template>
         </template>
       </div>
+    </div>
+    <div>
+      {{ JSON.stringify(roundWind) }} {{ data?.data.roundWind }}
     </div>
     <div class="text-center w-full pt-4">
       <UButton loading-auto color="secondary" @click="getNextGameResult()">Следующий результат</UButton>
