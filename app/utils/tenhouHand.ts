@@ -7,5 +7,9 @@ export interface TenhouHand {
     doraIndicators : string[],
     uraDoraIndicators : string[],
     isRiichi : boolean,
-    isTsumo : boolean
+    isTsumo : boolean,
+    han : number,
+    fu : string,
+    fu_details : FuDetail[],
+    yakusAchieved: object,
 }

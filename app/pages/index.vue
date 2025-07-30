@@ -15,7 +15,7 @@
 
 <template>
   <div class="p-10">
-    <h1 class="h1">
+    <h1 class="text-3xl text-center">
       {{ hand.GUID }}
     </h1>
     <!--
@@ -46,7 +46,7 @@
         </template>
       </div>
     </div>
-    <div class="winning-parameters grid grid-cols-5 w-auto pt-8">
+    <div class="winning-parameters grid grid-cols-5 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
       <div>Ветер раунда</div>
       <div>Ветер места</div>
       <div>Индикатор доры</div>
@@ -71,6 +71,32 @@
         <div class="grid grid-cols-1">
           <div>Риичи: {{ hand.isRiichi ? 'да' : 'нет' }}</div>
           <div>Цумо: {{ hand.isTsumo ? 'да' : 'нет' }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="winning-details grid grid-cols-2 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
+      <div>Яку</div>
+      <div>Фу</div>
+      <div>
+        <div class="grid grid-cols-2">
+          <template v-for="yaku in hand.yaku" :key="yaku">
+            <div>{{ yaku.name }}</div>
+            <div class=" text-right">{{ yaku.price }}</div>
+          </template>
+          <div class="winning-details-summary col-span-2 text-right">
+            {{ hand.han  }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="grid grid-cols-2">
+          <template v-for="fu in hand.fuDetails" :key="fu">
+            <div>{{ fu.reason }}</div>
+            <div class=" text-right">{{ fu.fu }}</div>
+          </template>
+          <div class="winning-details-summary col-span-2 text-right">
+            {{ hand.fu  }}
+          </div>
         </div>
       </div>
     </div>
@@ -114,5 +140,8 @@ div.winning-parameters {
 div.winning-parameters div {
   margin: 5px;
   text-align: center;
+}
+div.winning-details-summary {
+  border-top: 1px solid white;
 }
 </style>
