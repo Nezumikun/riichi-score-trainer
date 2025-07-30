@@ -79,4 +79,9 @@ export class Tile extends TileWithoutSuit {
     return returnArray;
   }
 
+  static parseWindOfRound(wind : string) : Tile {
+    const tileString : string = (wind === 'EAST') ? '1h' : (wind === 'SOUTH') ? '2h' : (wind === 'WEST') ? '3h' : '4h'
+    return Tile.parseString(tileString)[0]!
+  }
+
 }

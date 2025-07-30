@@ -1,36 +1,22 @@
 <script setup lang="ts">
-  const handArray = ref<Tile[]>([]);
-  const melds = ref<Tile[][]>([]);
-  const winningTile = ref<Tile>(new Tile("", ""));
-  const GUID = ref("");
+  const hand = ref<Hand>(new Hand())
+  const tenhouHandRequest = ref<TenhouHandRequest>()
   await getNextGameResult();
   
   async function getNextGameResult() {
-    const fetchData = await $fetch<GameResultRequest>('/api/getRandomGameResult')
+    const fetchData = await $fetch<TenhouHandRequest>('/api/getRandomTehnouHand')
+    tenhouHandRequest.value = fetchData
     console.log(fetchData)
-    if (fetchData.data !== null) {
-      const gameResult : GameResult = fetchData.data
-      GUID.value = fetchData.fileName.replace('.json', '');
-      const _winingTile : Tile = Tile.parseString(gameResult.winningTile)[0]!;
-      const hand : Tile[] = Tile.parseString(gameResult.hand)
-      const winingIndex = hand.findLastIndex(item => ((item.suit === _winingTile.suit) && (item.nominal === _winingTile.nominal)))
-      if (winingIndex > -1) {
-        hand.splice(winingIndex, 1);
-      }
-      handArray.value = hand;
-      melds.value = []
-      for (const meld of gameResult.melds) {
-        melds.value.push(Tile.parseString(meld));
-      }
-      winningTile.value = _winingTile
+    if (fetchData.tenhouHand !== null) {
+      hand.value.parseTehnouHandRequest(fetchData)
     }
   }
 </script>
 
 <template>
-  <div class="main">
-    <h1>
-      Index {{ GUID }}
+  <div class="p-10">
+    <h1 class="h1">
+      {{ hand.GUID }}
     </h1>
     <!--
     <div>
@@ -45,19 +31,47 @@
     -->
     <div class="text-center w-full">
       <div class="hand">
-        <template v-for="tile in handArray" :key="tile">
+        <template v-for="tile in hand.hand" :key="tile">
           <img :src="tile.getImageName()" :class="tile.getCssClasses()">
         </template>
       </div>
       <div class="tile-winning">
-        <img :src="winningTile.getImageName()" class="tile tile-winning">
+        <img :src="hand.winningTile.getImageName()" class="tile tile-winning">
       </div>
       <div class="melds">
-        <template v-for="meld in melds">
+        <template v-for="meld in hand.melds">
           <template v-for="tile in meld" :key="tile">
             <img :src="tile.getImageName()" :class="tile.getCssClasses()">
           </template>
         </template>
+      </div>
+    </div>
+    <div class="winning-parameters grid grid-cols-5 w-auto pt-8">
+      <div>Ветер раунда</div>
+      <div>Ветер места</div>
+      <div>Индикатор доры</div>
+      <div>Индикатор урадоры</div>
+      <div>Параметры выигрыша</div>
+      <div><img :src="hand.roundWind.getImageName()" :class="hand.roundWind.getCssClasses()"></div>
+      <div><img :src="hand.seatWind.getImageName()" :class="hand.seatWind.getCssClasses()"></div>
+      <div>
+        <template v-for="doraIndicator in hand.doraIndicators" :key="doraIndicator">
+          <img :src="doraIndicator.getImageName()" :class="doraIndicator.getCssClasses()">
+        </template>
+      </div>
+      <div>
+        <template v-if="hand.uraDoraIndicators" v-for="uraDoraIndicator in hand.uraDoraIndicators" :key="doraIndicator">
+          <img :src="uraDoraIndicator.getImageName()" :class="uraDoraIndicator.getCssClasses()">
+        </template>
+        <template v-if="!hand.uraDoraIndicators.length">
+          нет
+        </template>
+      </div>
+      <div>
+        <div class="grid grid-cols-1">
+          <div>Риичи: {{ hand.isRiichi ? 'да' : 'нет' }}</div>
+          <div>Цумо: {{ hand.isTsumo ? 'да' : 'нет' }}</div>
+        </div>
       </div>
     </div>
     <div class="text-center w-full pt-4">
@@ -77,8 +91,8 @@ img.tile {
 } 
 img.tile-called {
   transform: rotate(90deg) translate(17%);
-  margin-left: 11px;
-  margin-right: 11px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 img.tile-winning {
   border: medium solid red;
@@ -94,7 +108,11 @@ div.tile-winning {
 div.hand {
   display: inline-block;
 }
-div.main {
-  background-color: transparent; 
+div.winning-parameters {
+  border: this solid gray;
+}
+div.winning-parameters div {
+  margin: 5px;
+  text-align: center;
 }
 </style>
