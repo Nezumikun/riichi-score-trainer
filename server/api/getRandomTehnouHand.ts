@@ -8,6 +8,6 @@ export default defineEventHandler(async () => {
   return {
     index: index,
     fileName: list[index],
-    data: data
+    tenhouHand: data
   };
 })
