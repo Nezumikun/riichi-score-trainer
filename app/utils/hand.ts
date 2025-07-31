@@ -14,6 +14,7 @@ export class Hand {
     fuDetails : FuDetail[] = [];
     yaku : Yaku[] = [];
     isDealer : boolean = false;
+    LimitHand : 'mangan' | 'haneman' | 'baiman' | 'sanbaiman' | 'yakuman' | false = false;
 
     parseTehnouHandRequest(tenhouHandRequest : TenhouHandRequest) : void {
         const tenhouHand : TenhouHand = tenhouHandRequest.tenhouHand
@@ -58,6 +59,12 @@ export class Hand {
             this.yaku.push(new Yaku(parseInt(key), price));
         }
         this.isDealer = tenhouHand.isDealer
+        if (this.han >= 13) this.LimitHand = 'yakuman'
+        else if (this.han >= 11) this.LimitHand =  'sanbaiman'
+        else if (this.han >= 8) this.LimitHand =  'baiman'
+        else if (this.han >= 6) this.LimitHand = 'haneman'
+        else if ((this.han >= 5) || ((this.han === 4) && (this.fu >= 40)) || ((this.han === 3) && (this.fu >= 70))) this.LimitHand =  'mangan'
+        else this.LimitHand = false
         // console.log(this)
     }
 
@@ -67,29 +74,97 @@ export class Hand {
         return points;
     }
 
-    private getLimitHandType() : 'mangan' | 'haneman' | 'baiman' | 'sanbaiman' | 'yakuman' | false {
-        if (this.han >= 13) return 'yakuman'
-        if (this.han >= 11) return 'sanbaiman'
-        if (this.han >= 8) return 'baiman'
-        if (this.han >= 6) return 'haneman'
-        if ((this.han >= 5) || ((this.han === 4) && (this.fu >= 40)) || ((this.han === 3) && (this.fu >= 70))) return 'mangan'
-        return false
-    }
-
     getHandPoints() : HandPoints {
         const result : HandPoints = { fromNonDealer: 0, fromDealer: 0 };
         if (this.isDealer) {
             if (this.isTsumo) {
-                result.fromNonDealer = this.getPoints(2);
+                switch (this.LimitHand) {
+                    case 'yakuman':
+                        result.fromNonDealer = 16000;
+                        break;
+                    case 'sanbaiman':
+                        result.fromNonDealer = 12000;
+                        break;
+                    case 'baiman':
+                        result.fromNonDealer = 8000;
+                        break;
+                    case 'haneman':
+                        result.fromNonDealer = 6000;
+                        break;
+                    case 'mangan':
+                        result.fromNonDealer = 4000;
+                        break;
+                    default:
+                        result.fromNonDealer = this.getPoints(2);
+                }
             } else {
-                result.fromNonDealer = this.getPoints(6);
+                switch (this.LimitHand) {
+                    case 'yakuman':
+                        result.fromNonDealer = 48000;
+                        break;
+                    case 'sanbaiman':
+                        result.fromNonDealer = 36000;
+                        break;
+                    case 'baiman':
+                        result.fromNonDealer = 24000;
+                        break;
+                    case 'haneman':
+                        result.fromNonDealer = 18000;
+                        break;
+                    case 'mangan':
+                        result.fromNonDealer = 12000;
+                        break;
+                    default:
+                        result.fromNonDealer = this.getPoints(6);
+                }
             }
         } else {
             if (this.isTsumo) {
-                result.fromDealer = this.getPoints(2);
-                result.fromNonDealer = this.getPoints(1);
+                switch (this.LimitHand) {
+                    case 'yakuman':
+                        result.fromDealer = 16000;
+                        result.fromNonDealer = 8000;
+                        break;
+                    case 'sanbaiman':
+                        result.fromDealer = 12000;
+                        result.fromNonDealer = 6000;
+                        break;
+                    case 'baiman':
+                        result.fromDealer = 8000;
+                        result.fromNonDealer = 4000;
+                        break;
+                    case 'haneman':
+                        result.fromDealer = 6000;
+                        result.fromNonDealer = 3000;
+                        break;
+                    case 'mangan':
+                        result.fromDealer = 4000;
+                        result.fromNonDealer = 2000;
+                        break;
+                    default:
+                        result.fromDealer = this.getPoints(2);
+                        result.fromNonDealer = this.getPoints(1);
+                }
             } else {
-                result.fromDealer = result.fromNonDealer = this.getPoints(4);
+                switch (this.LimitHand) {
+                    case 'yakuman':
+                        result.fromDealer = result.fromNonDealer = 32000;
+                        break;
+                    case 'sanbaiman':
+                        result.fromDealer = result.fromNonDealer = 24000;
+                        break;
+                    case 'baiman':
+                        result.fromDealer = result.fromNonDealer = 16000;
+                        break;
+                    case 'haneman':
+                        result.fromDealer = result.fromNonDealer = 12000;
+                        break;
+                    case 'mangan':
+                        result.fromDealer = result.fromNonDealer = 8000;
+                        break;
+                    default:
+                        result.fromDealer = result.fromNonDealer = this.getPoints(4);
+                }
             }
         }
         return result;
