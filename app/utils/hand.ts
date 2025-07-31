@@ -9,6 +9,10 @@ export class Hand {
     uraDoraIndicators : Tile[] = [];
     isRiichi : boolean = false;
     isTsumo : boolean = false;
+    han : number = 0;
+    fu : number = 0;
+    fuDetails : FuDetail[] = [];
+    yaku : Yaku[] = [];
 
     parseTehnouHandRequest(tenhouHandRequest : TenhouHandRequest) : void {
         const tenhouHand : TenhouHand = tenhouHandRequest.tenhouHand
@@ -39,5 +43,19 @@ export class Hand {
         }
         this.isRiichi = tenhouHand.isRiichi
         this.isTsumo = tenhouHand.isTsumo
+        this.han = tenhouHand.han
+        this.fu = parseInt(tenhouHand.fu)
+        this.fuDetails = []
+        for (const fuDetail of tenhouHand.fu_details) {
+            if (fuDetail.reason === 'rounding') continue;
+            this.fuDetails.push(fuDetail);
+        }
+        this.yaku = []
+        for (const [key, value] of Object.entries(tenhouHand.yakusAchieved)) {
+            const price = parseInt(value);
+            if (price === 0) continue;
+            this.yaku.push(new Yaku(parseInt(key), price));
+        }
+        // console.log(this)
     }
 }
