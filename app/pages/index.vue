@@ -9,6 +9,7 @@
     console.log(fetchData)
     if (fetchData.tenhouHand !== null) {
       hand.value.parseTehnouHandRequest(fetchData)
+      console.log('points', hand.value.getHandPoints())
     }
   }
 </script>

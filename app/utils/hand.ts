@@ -13,6 +13,7 @@ export class Hand {
     fu : number = 0;
     fuDetails : FuDetail[] = [];
     yaku : Yaku[] = [];
+    isDealer : boolean = false;
 
     parseTehnouHandRequest(tenhouHandRequest : TenhouHandRequest) : void {
         const tenhouHand : TenhouHand = tenhouHandRequest.tenhouHand
@@ -56,6 +57,41 @@ export class Hand {
             if (price === 0) continue;
             this.yaku.push(new Yaku(parseInt(key), price));
         }
+        this.isDealer = tenhouHand.isDealer
         // console.log(this)
+    }
+
+    private getPoints(k : number, bazoro : number = 2) : number {
+        const base = this.fu * Math.pow(2, this.han + bazoro);
+        const points = Math.ceil(base * k / 100) * 100;
+        return points;
+    }
+
+    private getLimitHandType() : 'mangan' | 'haneman' | 'baiman' | 'sanbaiman' | 'yakuman' | false {
+        if (this.han >= 13) return 'yakuman'
+        if (this.han >= 11) return 'sanbaiman'
+        if (this.han >= 8) return 'baiman'
+        if (this.han >= 6) return 'haneman'
+        if ((this.han >= 5) || ((this.han === 4) && (this.fu >= 40)) || ((this.han === 3) && (this.fu >= 70))) return 'mangan'
+        return false
+    }
+
+    getHandPoints() : HandPoints {
+        const result : HandPoints = { fromNonDealer: 0, fromDealer: 0 };
+        if (this.isDealer) {
+            if (this.isTsumo) {
+                result.fromNonDealer = this.getPoints(2);
+            } else {
+                result.fromNonDealer = this.getPoints(6);
+            }
+        } else {
+            if (this.isTsumo) {
+                result.fromDealer = this.getPoints(2);
+                result.fromNonDealer = this.getPoints(1);
+            } else {
+                result.fromDealer = result.fromNonDealer = this.getPoints(4);
+            }
+        }
+        return result;
     }
 }
