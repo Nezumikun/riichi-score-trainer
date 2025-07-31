@@ -1,6 +1,7 @@
 export class Yaku {
     name : string;
     price : number;
+    codeName : string;
 
     constructor (nameOrIndex : string | number, price : number) {
         if (typeof nameOrIndex === 'number') {
@@ -8,6 +9,7 @@ export class Yaku {
         } else {
             this.name = nameOrIndex;
         }
+        this.codeName = 'yaku_' + this.name.toLowerCase().replace(' ', '_').replace(/[^a-z0-9_]/g, '')
         this.price = price;
     }
 

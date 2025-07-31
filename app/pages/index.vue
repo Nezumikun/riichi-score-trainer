@@ -51,7 +51,7 @@
       <div>{{ $t("wind_of_seat") }}</div>
       <div>{{ $t("dora_indicator") }}</div>
       <div>{{ $t("uradora_indicator") }}</div>
-      <div>{{ $t("wining_parameters") }}</div>
+      <div>{{ $t("winning_parameters") }}</div>
       <div><img :src="hand.roundWind.getImageName()" :class="hand.roundWind.getCssClasses()"></div>
       <div><img :src="hand.seatWind.getImageName()" :class="hand.seatWind.getCssClasses()"></div>
       <div>
@@ -60,8 +60,10 @@
         </template>
       </div>
       <div>
-        <template v-if="hand.uraDoraIndicators" v-for="uraDoraIndicator in hand.uraDoraIndicators" :key="doraIndicator">
-          <img :src="uraDoraIndicator.getImageName()" :class="uraDoraIndicator.getCssClasses()">
+        <template v-if="hand.uraDoraIndicators">
+          <template v-for="uraDoraIndicator in hand.uraDoraIndicators" :key="uraDoraIndicator">
+            <img :src="uraDoraIndicator.getImageName()" :class="uraDoraIndicator.getCssClasses()">
+          </template>
         </template>
         <template v-if="!hand.uraDoraIndicators.length">
           {{ $t("no") }}
@@ -80,7 +82,7 @@
       <div>
         <div class="grid grid-cols-2">
           <template v-for="yaku in hand.yaku" :key="yaku">
-            <div>{{ yaku.name }}</div>
+            <div>{{ $t(yaku.codeName) }}</div>
             <div class=" text-right">{{ yaku.price }}</div>
           </template>
           <div class="winning-details-summary col-span-2 text-right">
@@ -133,9 +135,6 @@ div.tile-winning {
 }
 div.hand {
   display: inline-block;
-}
-div.winning-parameters {
-  border: this solid gray;
 }
 div.winning-parameters div {
   margin: 5px;
