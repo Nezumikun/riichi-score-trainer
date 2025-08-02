@@ -1,15 +1,79 @@
 <script setup lang="ts">
+  class ShowParametersWinning {
+    showUradora : boolean = false
+    get winningCssClass() : string[] {
+      return [
+        'winning-parameters', 'grid', (this.showUradora) ? 'grid-cols-5' : 'grid-cols-4', 'pt-8', 'w-fit', 'min-w-1/2', 'gap-4', 'mx-auto'
+      ]
+    }
+  }
+
+  class ShowParametersAnswers {
+    han : string = "";
+    hanIsRight : boolean = false;
+    fu : string = "";
+    fuIsRight : boolean = false;
+
+    private baseCssClass() : string[] {
+      return ['text-sm', 'tabular-nums']
+    }
+
+    get hanCssClass() : string[] {
+      return this.baseCssClass().concat([this.hanIsRight ? 'answer-right' : 'answer-wrong'])
+    }
+    get fuCssClass() {
+      return this.baseCssClass().concat([this.fuIsRight ? 'answer-right' : 'answer-wrong'])
+    }
+  }
+
+  class ShowParameters {
+    tip : boolean = false
+    tipButton : boolean = false
+    checkButton : boolean = false
+    winning : ShowParametersWinning = new ShowParametersWinning()
+    answers : ShowParametersAnswers = new ShowParametersAnswers()
+  }
+
+  class InputAnswer {
+    han : string = ""
+    fu : string = ""
+  }
+
   const hand = ref<Hand>(new Hand())
   const tenhouHandRequest = ref<TenhouHandRequest>()
+  const showParameters = ref<ShowParameters>(new ShowParameters())
+  const inputAnswer = ref<InputAnswer>(new InputAnswer())
   
-  async function getNextGameResult() {
+  async function getNextGameResult() : Promise<void> {
     const fetchData = await $fetch<TenhouHandRequest>('/api/getRandomTehnouHand')
     tenhouHandRequest.value = fetchData
     console.log(fetchData)
     if (fetchData.tenhouHand !== null) {
       hand.value.parseTehnouHandRequest(fetchData)
+      const sp = showParameters.value;
+      sp.winning.showUradora = hand.value.uraDoraIndicators.length > 0
+      sp.tip = false
+      sp.checkButton = true
+      sp.tipButton = false
+      sp.answers = new ShowParametersAnswers()
+      inputAnswer.value = new InputAnswer()
       console.log('points', hand.value.getHandPoints())
     }
+  }
+
+  function checkAnswer() : void {
+    const sp = showParameters.value;
+    sp.answers.han = hand.value.han.toString()
+    sp.answers.hanIsRight = (hand.value.han === parseInt(inputAnswer.value.han))
+    sp.answers.fu = hand.value.fu.toString()
+    sp.answers.fuIsRight = (hand.value.fu === parseInt(inputAnswer.value.fu))
+    sp.tipButton = true
+    sp.checkButton = false
+  }
+
+  function showTip() : void {
+    showParameters.value.tip = true
+    showParameters.value.tipButton = false
   }
 </script>
 
@@ -36,11 +100,11 @@
           </template>
         </div>
       </div>
-      <div class="winning-parameters grid grid-cols-5 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
+      <div :class="showParameters.winning.winningCssClass">
         <div>{{ $t("wind_of_round") }}</div>
         <div>{{ $t("wind_of_seat") }}</div>
         <div>{{ $t("dora_indicator") }}</div>
-        <div>{{ $t("uradora_indicator") }}</div>
+        <div v-if="showParameters.winning.showUradora">{{ $t("uradora_indicator") }}</div>
         <div>{{ $t("winning_parameters") }}</div>
         <div><img :src="hand.roundWind.getImageName()" :class="hand.roundWind.getCssClasses()"></div>
         <div><img :src="hand.seatWind.getImageName()" :class="hand.seatWind.getCssClasses()"></div>
@@ -49,7 +113,7 @@
             <img :src="doraIndicator.getImageName()" :class="doraIndicator.getCssClasses()">
           </template>
         </div>
-        <div>
+        <div v-if="showParameters.winning.showUradora">
           <template v-if="hand.uraDoraIndicators">
             <template v-for="uraDoraIndicator in hand.uraDoraIndicators" :key="uraDoraIndicator">
               <img :src="uraDoraIndicator.getImageName()" :class="uraDoraIndicator.getCssClasses()">
@@ -66,35 +130,55 @@
           </div>
         </div>
       </div>
-      <div class="winning-details grid grid-cols-2 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
-        <div>{{ $t("Yaku") }}</div>
+      <div class="grid grid-cols-2 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
+        <div>{{ $t("Han") }}</div>
         <div>{{ $t("Fu") }}</div>
         <div>
-          <div class="grid grid-cols-2">
-            <template v-for="yaku in hand.yaku" :key="yaku">
-              <div>{{ $t(yaku.codeName) }}</div>
-              <div class=" text-right">{{ yaku.price }}</div>
+          <UInput v-model="inputAnswer.han">
+            <template #trailing>
+              <div :class="showParameters.answers.hanCssClass" role="status">{{ showParameters.answers.han }}</div>
             </template>
-            <div class="winning-details-summary col-span-2 text-right">
-              {{ hand.han  }}
-            </div>
-          </div>
+          </UInput>
         </div>
         <div>
-          <div class="grid grid-cols-5">
-            <template v-for="fu in hand.fuDetails" :key="fu">
-              <div class="col-span-4">{{ $t('fu_' + fu.reason) }}</div>
-              <div class=" text-right">{{ fu.fu }}</div>
+          <UInput v-model="inputAnswer.fu">
+            <template #trailing>
+              <div :class="showParameters.answers.fuCssClass" role="status">{{ showParameters.answers.fu }}</div>
             </template>
-            <div class="winning-details-summary col-span-5 text-right">
-              {{ hand.fu  }}
-            </div>
-          </div>
+          </UInput>
         </div>
       </div>
     </template>
     <div class="text-center w-full pt-4">
-      <UButton loading-auto color="secondary" @click="getNextGameResult()">{{ $t('next_hand') }}</UButton>
+      <UButton v-if="showParameters.checkButton" class="mx-4" color="secondary" @click="checkAnswer">{{ $t('check_answer') }}</UButton>
+      <UButton v-if="showParameters.tipButton" class="mx-4" color="secondary" @click="showTip">{{ $t('show_tip') }}</UButton>
+      <UButton class="mx-4" loading-auto color="secondary" @click="getNextGameResult">{{ $t('next_hand') }}</UButton>
+    </div>
+    <div v-if="showParameters.tip" class="winning-details grid grid-cols-2 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
+      <div>{{ $t("Yaku") }}</div>
+      <div>{{ $t("Fu") }}</div>
+      <div>
+        <div class="grid grid-cols-2">
+          <template v-for="yaku in hand.yaku" :key="yaku">
+            <div>{{ $t(yaku.codeName) }}</div>
+            <div class=" text-right">{{ yaku.price }}</div>
+          </template>
+          <div class="winning-details-summary col-span-2 text-right">
+            {{ hand.han  }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="grid grid-cols-5">
+          <template v-for="fu in hand.fuDetails" :key="fu">
+            <div class="col-span-4">{{ $t('fu_' + fu.reason) }}</div>
+            <div class=" text-right">{{ fu.fu }}</div>
+          </template>
+          <div class="winning-details-summary col-span-5 text-right">
+            {{ hand.fu  }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -133,5 +217,11 @@ div.winning-parameters div {
 }
 div.winning-details-summary {
   border-top: 1px solid white;
+}
+.answer-right {
+  color: darkgreen;
+}
+.answer-wrong {
+  color: red;
 }
 </style>
