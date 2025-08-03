@@ -197,6 +197,10 @@ img.tile-called {
   margin-left: 10px;
   margin-right: 10px;
 }
+img.tile-promoted {
+  margin-top: -140px;
+  margin-left: -80px;
+}
 img.tile-winning {
   border: medium solid red;
 }
