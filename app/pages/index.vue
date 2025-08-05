@@ -54,7 +54,6 @@
   async function getNextGameResult() : Promise<void> {
     const fetchData = await $fetch<TenhouHandRequest>('/api/getRandomTehnouHand')
     tenhouHandRequest.value = fetchData
-    console.log(fetchData)
     if (fetchData.tenhouHand !== null) {
       hand.value.parseTehnouHandRequest(fetchData)
       const sp = showParameters.value;

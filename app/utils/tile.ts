@@ -83,7 +83,6 @@ export class Tile extends TileWithoutSuit {
         flagFlippedTile = false;
       }
     }
-    console.log(returnArray)
     return returnArray;
   }
 

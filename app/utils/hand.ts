@@ -65,7 +65,6 @@ export class Hand {
         else if (this.han >= 6) this.LimitHand = 'haneman'
         else if ((this.han >= 5) || ((this.han === 4) && (this.fu >= 40)) || ((this.han === 3) && (this.fu >= 70))) this.LimitHand =  'mangan'
         else this.LimitHand = false
-        // console.log(this)
     }
 
     private getPoints(k : number, bazoro : number = 2) : number {

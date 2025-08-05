@@ -6,8 +6,7 @@ services:
     container_name: riichi-scoring-trainer-app
     restart: always
     ports:
-      - "3000:3000"
-    command: "npm run start"
+      - "3000:80"
     networks:
       - riichi-scoring-trainer
 networks:
