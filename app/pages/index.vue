@@ -13,6 +13,8 @@
     hanIsRight : boolean = false;
     fu : string = "";
     fuIsRight : boolean = false;
+    points : string = "";
+    pointsIsRight : boolean = false;
 
     private baseCssClass() : string[] {
       return ['text-sm', 'tabular-nums']
@@ -23,6 +25,9 @@
     }
     get fuCssClass() {
       return this.baseCssClass().concat([this.fuIsRight ? 'answer-right' : 'answer-wrong'])
+    }
+    get pointsCssClass() {
+      return this.baseCssClass().concat([this.pointsIsRight ? 'answer-right' : 'answer-wrong'])
     }
   }
 
@@ -37,6 +42,8 @@
   class InputAnswer {
     han : string = ""
     fu : string = ""
+    points : string = ""
+    pointsFromDealer : string = ""
   }
 
   const hand = ref<Hand>(new Hand())
@@ -62,11 +69,15 @@
   }
 
   function checkAnswer() : void {
+    const points : HandPoints = hand.value.getHandPoints();
+    const hv = hand.value;
     const sp = showParameters.value;
-    sp.answers.han = hand.value.han.toString()
-    sp.answers.hanIsRight = (hand.value.han === parseInt(inputAnswer.value.han))
-    sp.answers.fu = hand.value.fu.toString()
-    sp.answers.fuIsRight = (hand.value.fu === parseInt(inputAnswer.value.fu))
+    sp.answers.han = hv.han.toString()
+    sp.answers.hanIsRight = (hv.han === parseInt(inputAnswer.value.han))
+    sp.answers.fu = hv.fu.toString()
+    sp.answers.fuIsRight = (hv.fu === parseInt(inputAnswer.value.fu))
+    sp.answers.points = ((!hv.isDealer && hv.isTsumo) ? (points.fromDealer.toString() + "/") : "") +  points.fromNonDealer.toString();
+    sp.answers.pointsIsRight = (sp.answers.points === inputAnswer.value.points)
     sp.tipButton = true
     sp.checkButton = false
   }
@@ -130,9 +141,10 @@
           </div>
         </div>
       </div>
-      <div class="grid grid-cols-2 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
+      <div class="grid grid-cols-3 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
         <div>{{ $t("Han") }}</div>
         <div>{{ $t("Fu") }}</div>
+        <div>{{ $t("Points") }}</div>
         <div>
           <UInput v-model="inputAnswer.han">
             <template #trailing>
@@ -144,6 +156,13 @@
           <UInput v-model="inputAnswer.fu">
             <template #trailing>
               <div :class="showParameters.answers.fuCssClass" role="status">{{ showParameters.answers.fu }}</div>
+            </template>
+          </UInput>
+        </div>
+        <div>
+          <UInput v-model="inputAnswer.points">
+            <template #trailing>
+              <div :class="showParameters.answers.pointsCssClass" role="status">{{ showParameters.answers.points }}</div>
             </template>
           </UInput>
         </div>
