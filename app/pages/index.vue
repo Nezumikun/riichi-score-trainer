@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { useTemplateRef } from 'vue'
   class ShowParametersWinning {
     showUradora : boolean = false
     get winningCssClass() : string[] {
@@ -50,6 +51,7 @@
   const tenhouHandRequest = ref<TenhouHandRequest>()
   const showParameters = ref<ShowParameters>(new ShowParameters())
   const inputAnswer = ref<InputAnswer>(new InputAnswer())
+  const inputHan = useTemplateRef("inputHan")
   
   async function getNextGameResult() : Promise<void> {
     const fetchData = await $fetch<TenhouHandRequest>('/api/getRandomTehnouHand')
@@ -63,6 +65,9 @@
       sp.tipButton = false
       sp.answers = new ShowParametersAnswers()
       inputAnswer.value = new InputAnswer()
+      nextTick(() => {
+        inputHan.value?.inputRef?.focus()
+      })
       console.log('points', hand.value.getHandPoints())
     }
   }
@@ -145,7 +150,7 @@
         <div>{{ $t("Fu") }}</div>
         <div>{{ $t("Points") }}</div>
         <div>
-          <UInput v-model="inputAnswer.han">
+          <UInput ref="inputHan" v-model="inputAnswer.han">
             <template #trailing>
               <div :class="showParameters.answers.hanCssClass" role="status">{{ showParameters.answers.han }}</div>
             </template>
