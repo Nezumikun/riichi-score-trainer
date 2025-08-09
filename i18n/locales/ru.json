@@ -30,8 +30,8 @@
     "winning_parameters": "Параметры выигрыша",
     "riichi_option": "Риичи",
     "tsumo_option": "Цумо",
-    "next_hand": "Следующая рука",
-    "check_answer": "Проверить ответ",
+    "next_hand": "Дальше",
+    "check_answer": "Проверить",
     "show_tip": "Подсказка",
     "yaku_tsumo": "Цумо",
     "yaku_riichi": "Риичи",
@@ -76,5 +76,10 @@
     "yaku_suukantsu": "Сууканцу",
     "yaku_dora": "Дора",
     "yaku_uradora": "Урадора",
-    "yaku_akadora": "Акадора"
+    "yaku_akadora": "Акадора",
+    "limit_mangan": "Манган",
+    "limit_haneman": "Ханеман",
+    "limit_baiman": "Байман", 
+    "limit_sanbaiman": "Санбайман",
+    "limit_yakuman": "Якуман"
 }

@@ -11,6 +11,7 @@ export class Hand {
     isTsumo : boolean = false;
     han : number = 0;
     fu : number = 0;
+    exactFu: number = 0;
     fuDetails : FuDetail[] = [];
     yaku : Yaku[] = [];
     isDealer : boolean = false;
@@ -48,9 +49,11 @@ export class Hand {
         this.han = tenhouHand.han
         this.fu = parseInt(tenhouHand.fu)
         this.fuDetails = []
+        this.exactFu = 0
         for (const fuDetail of tenhouHand.fu_details) {
-            if (fuDetail.reason === 'rounding') continue;
-            this.fuDetails.push(fuDetail);
+            if (fuDetail.reason === 'rounding') continue
+            this.fuDetails.push(fuDetail)
+            this.exactFu += fuDetail.fu
         }
         this.yaku = []
         for (const [key, value] of Object.entries(tenhouHand.yakusAchieved)) {

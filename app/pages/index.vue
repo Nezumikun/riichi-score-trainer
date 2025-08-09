@@ -4,7 +4,15 @@ import { useTemplateRef } from 'vue'
     showUradora : boolean = false
     get winningCssClass() : string[] {
       return [
-        'winning-parameters', 'grid', (this.showUradora) ? 'grid-cols-5' : 'grid-cols-4', 'pt-8', 'w-fit', 'min-w-1/2', 'gap-4', 'mx-auto'
+        'winning-parameters',
+        'grid',
+        (this.showUradora) ? 'lg:grid-cols-5' : 'lg:grid-cols-4',
+        'grid-cols-3',
+        'pt-8',
+        'w-fit',
+        'min-w-1/2',
+        'gap-4',
+        'mx-auto'
       ]
     }
   }
@@ -106,7 +114,7 @@ import { useTemplateRef } from 'vue'
 </script>
 
 <template>
-  <div class="p-10">
+  <div class="lg:p-10">
     <template v-if="hand.hand.length">
       <h1 class="text-3xl text-center">
         {{ hand.GUID }}
@@ -129,40 +137,43 @@ import { useTemplateRef } from 'vue'
         </div>
       </div>
       <div :class="showParameters.winning.winningCssClass">
-        <div>{{ $t("wind_of_round") }}</div>
-        <div>{{ $t("wind_of_seat") }}</div>
-        <div>{{ $t("dora_indicator") }}</div>
-        <div v-if="showParameters.winning.showUradora">{{ $t("uradora_indicator") }}</div>
-        <div>{{ $t("winning_parameters") }}</div>
-        <div><img :src="hand.roundWind.getImageName()" :class="hand.roundWind.getCssClasses()"></div>
-        <div><img :src="hand.seatWind.getImageName()" :class="hand.seatWind.getCssClasses()"></div>
         <div>
-          <template v-for="doraIndicator in hand.doraIndicators" :key="doraIndicator">
-            <img :src="doraIndicator.getImageName()" :class="doraIndicator.getCssClasses()">
-          </template>
-        </div>
-        <div v-if="showParameters.winning.showUradora">
-          <template v-if="hand.uraDoraIndicators">
-            <template v-for="uraDoraIndicator in hand.uraDoraIndicators" :key="uraDoraIndicator">
-              <img :src="uraDoraIndicator.getImageName()" :class="uraDoraIndicator.getCssClasses()">
-            </template>
-          </template>
-          <template v-if="!hand.uraDoraIndicators.length">
-            {{ $t("no") }}
-          </template>
+          {{ $t("wind_of_round") }}
+          <div><img :src="hand.roundWind.getImageName()" :class="hand.roundWind.getCssClasses()"></div>
         </div>
         <div>
+          {{ $t("wind_of_seat") }}
+          <div><img :src="hand.seatWind.getImageName()" :class="hand.seatWind.getCssClasses()"></div>
+        </div>
+        <div>
+          <span class="hidden lg:inline-block">{{ $t("winning_parameters") }}</span>
           <div class="grid grid-cols-1">
             <div>{{ $t("riichi_option") }}: {{ hand.isRiichi ? $t("yes") : $t("no") }}</div>
             <div>{{ $t("tsumo_option") }}: {{ hand.isTsumo ? $t("yes") : $t("no") }}</div>
           </div>
         </div>
+        <div class="col-span-3 lg:col-span-1">
+          {{ $t("dora_indicator") }}
+          <div>
+            <template v-for="doraIndicator in hand.doraIndicators" :key="doraIndicator">
+              <img :src="doraIndicator.getImageName()" :class="doraIndicator.getCssClasses()">
+            </template>
+          </div>
+        </div>
+        <div v-if="showParameters.winning.showUradora" class="col-span-3 lg:col-span-1">
+          {{ $t("uradora_indicator") }}
+          <div>
+            <template v-if="hand.uraDoraIndicators">
+              <template v-for="uraDoraIndicator in hand.uraDoraIndicators" :key="uraDoraIndicator">
+                <img :src="uraDoraIndicator.getImageName()" :class="uraDoraIndicator.getCssClasses()">
+              </template>
+            </template>
+          </div>
+        </div>
       </div>
-      <div class="grid grid-cols-3 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
-        <div>{{ $t("Han") }}</div>
-        <div>{{ $t("Fu") }}</div>
-        <div>{{ $t("Points") }}</div>
+      <div class="grid grid-cols-2 md:grid-cols-3 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
         <div>
+          <div>{{ $t("Han") }}</div>
           <UInput ref="inputHan" v-model="inputAnswer.han" :disabled="showParameters.inputDisabled" @keyup.enter="jumpToInputFu">
             <template #trailing>
               <div :class="showParameters.answers.hanCssClass" role="status">{{ showParameters.answers.han }}</div>
@@ -170,14 +181,16 @@ import { useTemplateRef } from 'vue'
           </UInput>
         </div>
         <div>
+          <div>{{ $t("Fu") }}</div>
           <UInput ref="inputFu" v-model="inputAnswer.fu" :disabled="showParameters.inputDisabled" @keyup.enter="jumpToInputPoints">
             <template #trailing>
               <div :class="showParameters.answers.fuCssClass" role="status">{{ showParameters.answers.fu }}</div>
             </template>
           </UInput>
         </div>
-        <div>
-          <UInput ref="inputPoints" v-model="inputAnswer.points" :disabled="showParameters.inputDisabled" @keyup.enter="checkAnswer">
+        <div class="col-span-2 md:col-span-1">
+          <div>{{ $t("Points") }}</div>
+          <UInput ref="inputPoints" v-model="inputAnswer.points" class="w-full" :disabled="showParameters.inputDisabled" @keyup.enter="checkAnswer">
             <template #trailing>
               <div :class="showParameters.answers.pointsCssClass" role="status">{{ showParameters.answers.points }}</div>
             </template>
@@ -185,10 +198,10 @@ import { useTemplateRef } from 'vue'
         </div>
       </div>
     </template>
-    <div class="text-center w-full pt-4">
-      <UButton v-if="showParameters.checkButton" class="mx-4" color="secondary" @click="checkAnswer">{{ $t('check_answer') }}</UButton>
-      <UButton v-if="showParameters.tipButton" class="mx-4" color="secondary" @click="showTip">{{ $t('show_tip') }}</UButton>
-      <UButton class="mx-4" loading-auto color="secondary" @click="getNextGameResult">{{ $t('next_hand') }}</UButton>
+    <div class="text-center w-full">
+      <UButton v-if="showParameters.checkButton" class="mx-4 mt-4" color="secondary" @click="checkAnswer">{{ $t('check_answer') }}</UButton>
+      <UButton v-if="showParameters.tipButton" class="mx-4 mt-4" color="secondary" @click="showTip">{{ $t('show_tip') }}</UButton>
+      <UButton class="mx-4 mt-4" loading-auto color="secondary" @click="getNextGameResult">{{ $t('next_hand') }}</UButton>
     </div>
     <div v-if="showParameters.tip" class="winning-details grid grid-cols-2 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
       <div>{{ $t("Yaku") }}</div>
@@ -197,7 +210,7 @@ import { useTemplateRef } from 'vue'
         <div class="grid grid-cols-2">
           <template v-for="yaku in hand.yaku" :key="yaku">
             <div>{{ $t(yaku.codeName) }}</div>
-            <div class=" text-right">{{ yaku.price }}</div>
+            <div class="flex justify-end items-end">{{ yaku.price }}</div>
           </template>
           <div class="winning-details-summary col-span-2 text-right">
             {{ hand.han  }}
@@ -205,15 +218,19 @@ import { useTemplateRef } from 'vue'
         </div>
       </div>
       <div>
-        <div class="grid grid-cols-5">
+        <div class="grid grid-cols-5 align-text-bottom">
           <template v-for="fu in hand.fuDetails" :key="fu">
             <div class="col-span-4">{{ $t('fu_' + fu.reason) }}</div>
-            <div class=" text-right">{{ fu.fu }}</div>
+            <div class="flex justify-end items-end">{{ fu.fu }}</div>
           </template>
           <div class="winning-details-summary col-span-5 text-right">
+            <span v-if="hand.exactFu !== hand.fu">{{ hand.exactFu }} <UIcon name="i-lucide-arrow-right" /></span>
             {{ hand.fu  }}
           </div>
         </div>
+      </div>
+      <div v-if="hand.LimitHand !== false" class="col-span-2 text-center">
+        {{ $t("limit_" + hand.LimitHand) }}
       </div>
     </div>
   </div>
@@ -223,15 +240,23 @@ import { useTemplateRef } from 'vue'
 img.tile {
   display: inline-block;
   padding: 2px;
-  width: 70px;
+  width: 45px;
   background-color: white;
   border-radius: 12px;
   border: thin solid grey;
+  @media (width >= 64rem) {
+    width: 70px;
+  }
 } 
 img.tile-called {
-  transform: rotate(90deg) translate(17%);
-  margin-left: 10px;
-  margin-right: 10px;
+  transform: rotate(90deg) translate(12%) scale(0.99);
+  margin-left: 6px;
+  margin-right: 6px;
+  @media (width >= 64rem) {
+    transform: rotate(90deg) translate(17%);
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
 img.tile-promoted {
   margin-top: -140px;
