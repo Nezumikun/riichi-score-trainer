@@ -70,7 +70,7 @@ export class Hand {
         else this.LimitHand = false
     }
 
-    private getPoints(k : number, bazoro : number = 2) : number {
+    getPoints(k : number, bazoro : number = 2) : number {
         const base = this.fu * Math.pow(2, this.han + bazoro);
         const points = Math.ceil(base * k / 100) * 100;
         return points;
