@@ -1,20 +1,22 @@
 class TileWithoutSuit {
-  nominal: string;
-  isCalled: boolean;
-  isFlipped: boolean;
+  nominal : string;
+  isCalled : boolean;
+  isFlipped : boolean;
+  isPromoted : boolean;
 
-  constructor(nominal : string, isCalled : boolean = false, isFlipped : boolean = false) {
+  constructor(nominal : string, isCalled : boolean = false, isFlipped : boolean = false, isPromoted : boolean = false) {
     this.nominal = nominal;
     this.isCalled = isCalled;
-    this.isFlipped = isFlipped
+    this.isFlipped = isFlipped;
+    this.isPromoted = isPromoted;
   }
 }
 
 export class Tile extends TileWithoutSuit {
   suit: string;
 
-  constructor(suit : string, nominal : string, isCalled : boolean = false, isFlipped : boolean = false) {
-    super(nominal, isCalled, isFlipped);
+  constructor(suit : string, nominal : string, isCalled : boolean = false, isFlipped : boolean = false, isPromoted : boolean = false) {
+    super(nominal, isCalled, isFlipped, isPromoted);
     this.suit = suit;
   }
 
@@ -47,6 +49,9 @@ export class Tile extends TileWithoutSuit {
     if (this.isCalled) {
       returnArray.push("tile-called");
     }
+    if (this.isPromoted) {
+      returnArray.push("tile-promoted");
+    }
     return returnArray;
   }
 
@@ -54,13 +59,14 @@ export class Tile extends TileWithoutSuit {
     const returnArray : Tile[] = [];
     let flagCalledTile : boolean = false;
     let flagFlippedTile : boolean = false;
+    let flagPromotedTile : boolean = false;
     const buffer : TileWithoutSuit[] = [];
     for (const item of tileString) {
       if ((item === 'm') || (item === 'p') || (item === 's') || (item === 'h')) {
         while (true) {
           const bufferItem = buffer.shift();
           if (bufferItem === undefined) break;
-          returnArray.push(new Tile(item, bufferItem.nominal, bufferItem.isCalled, bufferItem.isFlipped));
+          returnArray.push(new Tile(item, bufferItem.nominal, bufferItem.isCalled, bufferItem.isFlipped, bufferItem.isPromoted));
         }
         continue;
       }
@@ -71,7 +77,8 @@ export class Tile extends TileWithoutSuit {
         flagFlippedTile = true;
       }
       else {
-        buffer.push(new TileWithoutSuit(item, flagCalledTile, flagFlippedTile));
+        buffer.push(new TileWithoutSuit(item, flagCalledTile, flagFlippedTile, (flagCalledTile) ? flagPromotedTile : false));
+        if (flagCalledTile) flagPromotedTile = true;
         flagCalledTile = false;
         flagFlippedTile = false;
       }

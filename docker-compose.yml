@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  nuxt-app:
+    build: .
+    container_name: riichi-scoring-trainer-app
+    restart: always
+    ports:
+      - "3000:80"
+    networks:
+      - riichi-scoring-trainer
+networks:
+  riichi-scoring-trainer:
+    driver: bridge

@@ -11,5 +11,6 @@ export interface TenhouHand {
     han : number,
     fu : string,
     fu_details : FuDetail[],
-    yakusAchieved: object,
+    yakusAchieved : object,
+    isDealer : boolean
 }
