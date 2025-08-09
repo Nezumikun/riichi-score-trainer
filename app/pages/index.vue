@@ -237,7 +237,7 @@ import { useTemplateRef } from 'vue'
 img.tile {
   display: inline-block;
   padding: 2px;
-  width: 50px;
+  width: 45px;
   background-color: white;
   border-radius: 12px;
   border: thin solid grey;
@@ -246,7 +246,7 @@ img.tile {
   }
 } 
 img.tile-called {
-  transform: rotate(90deg) translate(13%);
+  transform: rotate(90deg) translate(12%) scale(0.99);
   margin-left: 6px;
   margin-right: 6px;
   @media (width >= 64rem) {
