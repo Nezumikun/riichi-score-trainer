@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useTemplateRef } from 'vue'
+import { useTemplateRef } from 'vue'
   class ShowParametersWinning {
     showUradora : boolean = false
     get winningCssClass() : string[] {
@@ -36,6 +36,7 @@
     tip : boolean = false
     tipButton : boolean = false
     checkButton : boolean = false
+    inputDisabled : boolean = false
     winning : ShowParametersWinning = new ShowParametersWinning()
     answers : ShowParametersAnswers = new ShowParametersAnswers()
   }
@@ -52,6 +53,8 @@
   const showParameters = ref<ShowParameters>(new ShowParameters())
   const inputAnswer = ref<InputAnswer>(new InputAnswer())
   const inputHan = useTemplateRef("inputHan")
+  const inputFu = useTemplateRef("inputFu")
+  const inputPoints = useTemplateRef("inputPoints")
   
   async function getNextGameResult() : Promise<void> {
     const fetchData = await $fetch<TenhouHandRequest>('/api/getRandomTehnouHand')
@@ -63,6 +66,7 @@
       sp.tip = false
       sp.checkButton = true
       sp.tipButton = false
+      sp.inputDisabled = false
       sp.answers = new ShowParametersAnswers()
       inputAnswer.value = new InputAnswer()
       nextTick(() => {
@@ -84,11 +88,20 @@
     sp.answers.pointsIsRight = (sp.answers.points === inputAnswer.value.points)
     sp.tipButton = true
     sp.checkButton = false
+    sp.inputDisabled = true
   }
 
   function showTip() : void {
     showParameters.value.tip = true
     showParameters.value.tipButton = false
+  }
+
+  function jumpToInputFu() {
+    inputFu.value?.inputRef?.focus()    
+  }
+
+  function jumpToInputPoints() {
+    inputPoints.value?.inputRef?.focus()    
   }
 </script>
 
@@ -150,21 +163,21 @@
         <div>{{ $t("Fu") }}</div>
         <div>{{ $t("Points") }}</div>
         <div>
-          <UInput ref="inputHan" v-model="inputAnswer.han">
+          <UInput ref="inputHan" v-model="inputAnswer.han" :disabled="showParameters.inputDisabled" @keyup.enter="jumpToInputFu">
             <template #trailing>
               <div :class="showParameters.answers.hanCssClass" role="status">{{ showParameters.answers.han }}</div>
             </template>
           </UInput>
         </div>
         <div>
-          <UInput v-model="inputAnswer.fu">
+          <UInput ref="inputFu" v-model="inputAnswer.fu" :disabled="showParameters.inputDisabled" @keyup.enter="jumpToInputPoints">
             <template #trailing>
               <div :class="showParameters.answers.fuCssClass" role="status">{{ showParameters.answers.fu }}</div>
             </template>
           </UInput>
         </div>
         <div>
-          <UInput v-model="inputAnswer.points">
+          <UInput ref="inputPoints" v-model="inputAnswer.points" :disabled="showParameters.inputDisabled" @keyup.enter="checkAnswer">
             <template #trailing>
               <div :class="showParameters.answers.pointsCssClass" role="status">{{ showParameters.answers.points }}</div>
             </template>
