@@ -229,6 +229,9 @@ import { useTemplateRef } from 'vue'
           </div>
         </div>
       </div>
+      <div v-if="hand.LimitHand !== false" class="col-span-2 text-center">
+        {{ $t("limit_" + hand.LimitHand) }}
+      </div>
     </div>
   </div>
 </template>
