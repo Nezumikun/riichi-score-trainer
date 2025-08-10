@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const hand = defineModel<Hand>({ required: true })
+const hand = defineModel<WinningDetails>({ required: true })
 </script>
 
 <template>
@@ -29,8 +29,8 @@ const hand = defineModel<Hand>({ required: true })
         </div>
       </div>
     </div>
-    <div v-if="hand.LimitHand !== false" class="col-span-2 text-center">
-      {{ $t("limit_" + hand.LimitHand) }}
+    <div v-if="hand.limitHand !== false" class="col-span-2 text-center">
+      {{ $t("limit_" + hand.limitHand) }}
     </div>
   </div>
 </template>

@@ -80,13 +80,13 @@ import { useTemplateRef } from 'vue'
       nextTick(() => {
         inputHan.value?.inputRef?.focus()
       })
-      console.log('points', hand.value.getHandPoints())
+      console.log('points', hand.value.winningDetails.getHandPoints())
     }
   }
 
   function checkAnswer() : void {
-    const points : HandPoints = hand.value.getHandPoints();
-    const hv = hand.value;
+    const points : HandPoints = hand.value.winningDetails.getHandPoints();
+    const hv = hand.value.winningDetails;
     const sp = showParameters.value;
     sp.answers.han = hv.han.toString()
     sp.answers.hanIsRight = (hv.han === parseInt(inputAnswer.value.han))
@@ -203,7 +203,7 @@ import { useTemplateRef } from 'vue'
       <UButton v-if="showParameters.tipButton" class="mx-4 mt-4" color="secondary" @click="showTip">{{ $t('show_tip') }}</UButton>
       <UButton class="mx-4 mt-4" loading-auto color="secondary" @click="getNextGameResult">{{ $t('next_hand') }}</UButton>
     </div>
-    <WinningDetails v-if="showParameters.tip" v-model="hand" />
+    <WinningDetails v-if="showParameters.tip" v-model="hand.winningDetails" />
   </div>
 </template>
 
