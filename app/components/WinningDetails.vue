@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const hand = defineModel<WinningDetails>({ required: true })
+const props = defineProps<{
+  details : WinningDetails
+}>()
 </script>
 
 <template>
@@ -8,29 +10,29 @@ const hand = defineModel<WinningDetails>({ required: true })
     <div>{{ $t("Fu") }}</div>
     <div>
       <div class="grid grid-cols-2">
-        <template v-for="yaku in hand.yaku" :key="yaku">
+        <template v-for="yaku in props.details.yaku" :key="yaku">
           <div>{{ $t(yaku.codeName) }}</div>
           <div class="flex justify-end items-end">{{ yaku.price }}</div>
         </template>
         <div class="winning-details-summary col-span-2 text-right">
-          {{ hand.han  }}
+          {{ props.details.han  }}
         </div>
       </div>
     </div>
     <div>
       <div class="grid grid-cols-5 align-text-bottom">
-        <template v-for="fu in hand.fuDetails" :key="fu">
+        <template v-for="fu in props.details.fuDetails" :key="fu">
           <div class="col-span-4">{{ $t('fu_' + fu.reason) }}</div>
           <div class="flex justify-end items-end">{{ fu.fu }}</div>
         </template>
         <div class="winning-details-summary col-span-5 text-right">
-          <span v-if="hand.exactFu !== hand.fu">{{ hand.exactFu }} <UIcon name="i-lucide-arrow-right" /></span>
-          {{ hand.fu  }}
+          <span v-if="props.details.exactFu !== props.details.fu">{{ props.details.exactFu }} <UIcon name="i-lucide-arrow-right" /></span>
+          {{ props.details.fu  }}
         </div>
       </div>
     </div>
-    <div v-if="hand.limitHand !== false" class="col-span-2 text-center">
-      {{ $t("limit_" + hand.limitHand) }}
+    <div v-if="props.details.limitHand !== false" class="col-span-2 text-center">
+      {{ $t("limit_" + props.details.limitHand) }}
     </div>
   </div>
 </template>

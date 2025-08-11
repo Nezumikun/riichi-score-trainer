@@ -115,27 +115,11 @@ import { useTemplateRef } from 'vue'
 
 <template>
   <div class="lg:p-10">
-    <template v-if="hand.hand.length">
+    <template v-if="hand.hand.hand.length">
       <h1 class="text-3xl text-center">
         {{ hand.GUID }}
       </h1>
-      <div class="text-center w-full">
-        <div class="hand">
-          <template v-for="tile in hand.hand" :key="tile">
-            <img :src="tile.getImageName()" :class="tile.getCssClasses()">
-          </template>
-        </div>
-        <div class="tile-winning">
-          <img :src="hand.winningTile.getImageName()" class="tile tile-winning">
-        </div>
-        <div class="melds">
-          <template v-for="meld in hand.melds">
-            <template v-for="tile in meld" :key="tile">
-              <img :src="tile.getImageName()" :class="tile.getCssClasses()">
-            </template>
-          </template>
-        </div>
-      </div>
+      <HandView :hand="hand.hand" />
       <div :class="showParameters.winning.winningCssClass">
         <div>
           {{ $t("wind_of_round") }}
@@ -203,50 +187,13 @@ import { useTemplateRef } from 'vue'
       <UButton v-if="showParameters.tipButton" class="mx-4 mt-4" color="secondary" @click="showTip">{{ $t('show_tip') }}</UButton>
       <UButton class="mx-4 mt-4" loading-auto color="secondary" @click="getNextGameResult">{{ $t('next_hand') }}</UButton>
     </div>
-    <WinningDetails v-if="showParameters.tip" v-model="hand.winningDetails" />
+    <WinningDetails v-if="showParameters.tip" :details="hand.winningDetails" />
   </div>
 </template>
 
 <style scoped>
-img.tile {
-  display: inline-block;
-  padding: 2px;
-  width: 45px;
-  background-color: white;
-  border-radius: 12px;
-  border: thin solid grey;
-  @media (width >= 64rem) {
-    width: 70px;
-  }
-} 
-img.tile-called {
-  transform: rotate(90deg) translate(12%) scale(0.99);
-  margin-left: 6px;
-  margin-right: 6px;
-  @media (width >= 64rem) {
-    transform: rotate(90deg) translate(17%);
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-}
-img.tile-promoted {
-  margin-top: -140px;
-  margin-left: -80px;
-}
-img.tile-winning {
-  border: medium solid red;
-}
-div.melds {
-  padding-left: 10px;
-  display: inline-block;
-}
-div.tile-winning {
-  padding-left: 10px;
-  display: inline-block;
-}
-div.hand {
-  display: inline-block;
-}
+@import '../assets/css/shared/tile.css';
+
 div.winning-parameters div {
   margin: 5px;
   text-align: center;
