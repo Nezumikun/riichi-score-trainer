@@ -34,14 +34,14 @@ const props = defineProps<{
     margin-top: -140px;
     margin-left: -80px;
   }
-  img.tile-winning {
+  .tile-winning img {
     border: medium solid red;
   }
-  div.melds {
-    padding-left: 10px;
-    display: inline-block;
+  .dora-list img {
+    margin-left: 5px;
+    margin-right: 5px;
   }
-  div.tile-winning {
+  div.melds {
     padding-left: 10px;
     display: inline-block;
   }

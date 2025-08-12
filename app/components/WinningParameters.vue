@@ -10,13 +10,13 @@ const props = defineProps<{
 <template>
   <div class="winning-parameters grid lg:grid-cols-4 grid-cols-3 lg:grid-flow-col pt-8 w-fit min-w-1/2 gap-4 mx-auto">
     <div>
-      {{ $t("wind_of_round") }}
+      <div class="text-nowrap">{{ $t("wind_of_round") }}</div>
       <div>
         <TileImage :tile="props.parameters.roundWind" />
       </div>
     </div>
     <div>
-      {{ $t("wind_of_seat") }}
+      <div class="text-nowrap">{{ $t("wind_of_seat") }}</div>
       <div>
         <TileImage :tile="props.parameters.seatWind" />
       </div>
@@ -30,7 +30,7 @@ const props = defineProps<{
     </div>
     <div class="col-span-3 lg:col-span-1">
       {{ $t("dora_indicator") }}
-      <div>
+      <div class="dora-list">
         <template v-for="doraIndicator in props.parameters.doraIndicators" :key="doraIndicator">
           <TileImage :tile="doraIndicator" />
         </template>
@@ -38,7 +38,7 @@ const props = defineProps<{
     </div>
     <div v-if="props.parameters.uraDoraIndicators.length > 0" class="col-span-3 lg:col-span-1">
       {{ $t("uradora_indicator") }}
-      <div>
+      <div class="dora-list">
         <template v-if="props.parameters.uraDoraIndicators">
           <template v-for="uraDoraIndicator in props.parameters.uraDoraIndicators" :key="uraDoraIndicator">
             <TileImage :tile="uraDoraIndicator" />

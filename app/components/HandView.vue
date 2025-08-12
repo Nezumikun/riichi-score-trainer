@@ -12,9 +12,9 @@ const props = defineProps<{
       <template v-for="tile in props.hand.hand" :key="tile">
         <TileImage :tile="tile" />
       </template>
-    </div>
-    <div class="tile-winning">
-      <TileImage :tile="props.hand.winningTile" />
+      <div class="tile-winning">
+        <TileImage :tile="props.hand.winningTile" />
+      </div>
     </div>
     <div class="melds">
       <template v-for="meld in props.hand.melds">
@@ -25,3 +25,10 @@ const props = defineProps<{
     </div>
   </div>
 </template>
+
+<style scoped>
+  div.tile-winning {
+    padding-left: 10px;
+    display: inline-block;
+  }
+</style>
