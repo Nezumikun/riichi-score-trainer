@@ -1,22 +1,5 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue'
-  class ShowParametersWinning {
-    showUradora : boolean = false
-    get winningCssClass() : string[] {
-      return [
-        'winning-parameters',
-        'grid',
-        (this.showUradora) ? 'lg:grid-cols-5' : 'lg:grid-cols-4',
-        'grid-cols-3',
-        'pt-8',
-        'w-fit',
-        'min-w-1/2',
-        'gap-4',
-        'mx-auto'
-      ]
-    }
-  }
-
   class ShowParametersAnswers {
     han : string = "";
     hanIsRight : boolean = false;
@@ -45,7 +28,6 @@ import { useTemplateRef } from 'vue'
     tipButton : boolean = false
     checkButton : boolean = false
     inputDisabled : boolean = false
-    winning : ShowParametersWinning = new ShowParametersWinning()
     answers : ShowParametersAnswers = new ShowParametersAnswers()
   }
 
@@ -70,7 +52,6 @@ import { useTemplateRef } from 'vue'
     if (fetchData.tenhouHand !== null) {
       hand.value.parseTehnouHandRequest(fetchData)
       const sp = showParameters.value;
-      sp.winning.showUradora = hand.value.uraDoraIndicators.length > 0
       sp.tip = false
       sp.checkButton = true
       sp.tipButton = false
@@ -115,46 +96,12 @@ import { useTemplateRef } from 'vue'
 
 <template>
   <div class="lg:p-10">
-    <template v-if="hand.hand.hand.length">
+    <template v-if="hand.tiles.hand.length">
       <h1 class="text-3xl text-center">
         {{ hand.GUID }}
       </h1>
-      <HandView :hand="hand.hand" />
-      <div :class="showParameters.winning.winningCssClass">
-        <div>
-          {{ $t("wind_of_round") }}
-          <div><img :src="hand.roundWind.getImageName()" :class="hand.roundWind.getCssClasses()"></div>
-        </div>
-        <div>
-          {{ $t("wind_of_seat") }}
-          <div><img :src="hand.seatWind.getImageName()" :class="hand.seatWind.getCssClasses()"></div>
-        </div>
-        <div>
-          <span class="hidden lg:inline-block">{{ $t("winning_parameters") }}</span>
-          <div class="grid grid-cols-1">
-            <div>{{ $t("riichi_option") }}: {{ hand.isRiichi ? $t("yes") : $t("no") }}</div>
-            <div>{{ $t("tsumo_option") }}: {{ hand.isTsumo ? $t("yes") : $t("no") }}</div>
-          </div>
-        </div>
-        <div class="col-span-3 lg:col-span-1">
-          {{ $t("dora_indicator") }}
-          <div>
-            <template v-for="doraIndicator in hand.doraIndicators" :key="doraIndicator">
-              <img :src="doraIndicator.getImageName()" :class="doraIndicator.getCssClasses()">
-            </template>
-          </div>
-        </div>
-        <div v-if="showParameters.winning.showUradora" class="col-span-3 lg:col-span-1">
-          {{ $t("uradora_indicator") }}
-          <div>
-            <template v-if="hand.uraDoraIndicators">
-              <template v-for="uraDoraIndicator in hand.uraDoraIndicators" :key="uraDoraIndicator">
-                <img :src="uraDoraIndicator.getImageName()" :class="uraDoraIndicator.getCssClasses()">
-              </template>
-            </template>
-          </div>
-        </div>
-      </div>
+      <HandView :hand="hand.tiles" />
+      <WinningParameters :parameters="hand.winningParameters" />
       <div class="grid grid-cols-2 md:grid-cols-3 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
         <div>
           <div>{{ $t("Han") }}</div>
@@ -192,12 +139,6 @@ import { useTemplateRef } from 'vue'
 </template>
 
 <style scoped>
-@import '../assets/css/shared/tile.css';
-
-div.winning-parameters div {
-  margin: 5px;
-  text-align: center;
-}
 .answer-right {
   color: darkgreen;
 }

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import TileImage from './TileImage.vue';
+
 const props = defineProps<{
   hand : TilesInHand
 }>()
@@ -8,22 +10,18 @@ const props = defineProps<{
   <div class="text-center w-full">
     <div class="hand">
       <template v-for="tile in props.hand.hand" :key="tile">
-        <img :src="tile.getImageName()" :class="tile.getCssClasses()">
+        <TileImage :tile="tile" />
       </template>
     </div>
     <div class="tile-winning">
-      <img :src="props.hand.winningTile.getImageName()" class="tile tile-winning">
+      <TileImage :tile="props.hand.winningTile" />
     </div>
     <div class="melds">
       <template v-for="meld in props.hand.melds">
         <template v-for="tile in meld" :key="tile">
-          <img :src="tile.getImageName()" :class="tile.getCssClasses()">
+          <TileImage :tile="tile" />
         </template>
       </template>
     </div>
   </div>
 </template>
-
-<style scoped>
-@import '../assets/css/shared/tile.css';
-</style>
