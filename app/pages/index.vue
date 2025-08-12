@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTemplateRef } from 'vue'
+  import { useTemplateRef } from 'vue'
   class ShowParametersAnswers {
     han : string = "";
     hanIsRight : boolean = false;
@@ -97,9 +97,6 @@ import { useTemplateRef } from 'vue'
 <template>
   <div class="lg:p-10">
     <template v-if="hand.tiles.hand.length">
-      <h1 class="text-3xl text-center">
-        {{ hand.GUID }}
-      </h1>
       <HandView :hand="hand.tiles" />
       <WinningParameters :parameters="hand.winningParameters" />
       <div class="grid grid-cols-2 md:grid-cols-3 pt-8 w-fit min-w-1/2 gap-4 mx-auto">
