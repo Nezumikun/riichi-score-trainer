@@ -20,12 +20,17 @@ const props = defineProps<{
       width: 70px;
     }
   } 
+  .winning-parameters img.tile {
+    @media (width >= 64rem) {
+      width: 50px;
+    }
+  } 
   img.tile-called {
     transform: rotate(90deg) translate(12%) scale(0.99);
     margin-left: 6px;
     margin-right: 6px;
     @media (width >= 64rem) {
-      transform: rotate(90deg) translate(17%);
+      transform: rotate(90deg) translate(17%) scale(0.99);
       margin-left: 10px;
       margin-right: 10px;
     }
@@ -40,12 +45,5 @@ const props = defineProps<{
   .dora-list img {
     margin-left: 5px;
     margin-right: 5px;
-  }
-  div.melds {
-    padding-left: 10px;
-    display: inline-block;
-  }
-  div.hand {
-    display: inline-block;
   }
 </style>
