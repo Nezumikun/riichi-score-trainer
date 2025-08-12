@@ -1,5 +1,8 @@
 <template>
-  <UContainer class="pb-30">
-    <slot />
-  </UContainer>
+  <div>
+    <NavBar />
+    <UContainer class="pb-30 pt-2">
+      <slot />
+    </UContainer>
+  </div>
 </template>
