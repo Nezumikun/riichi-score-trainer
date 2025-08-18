@@ -115,7 +115,7 @@
 <template>
   <div class="lg:p-10">
     <template v-if="hand.tiles.hand.length">
-      <HandView :hand="hand.tiles" />
+      <HandView :hand="hand.tiles" :carelessly="trainingSettings.carelessly"/>
       <WinningParameters :parameters="hand.winningParameters" />
       <div class="grid grid-cols-2 lg:grid-flow-col pt-8 w-fit min-w-1/2 gap-4 mx-auto">
         <div>
@@ -162,6 +162,9 @@
         </div>
         <div>
           <UCheckbox v-model="trainingSettings.checkOnlyHanAndFu" :label="$t('settings_check_only_han_and_fu')" @update:model-value="saveTrainingSettings" />
+        </div>
+        <div>
+          <UCheckbox v-model="trainingSettings.carelessly" :label="$t('settings_carelessly')" @update:model-value="saveTrainingSettings" />
         </div>
       </div>
     </template>
