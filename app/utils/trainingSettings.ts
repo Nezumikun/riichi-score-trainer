@@ -1,5 +1,6 @@
 export class TrainingSettings {
-  autoshowYakuAndFu : boolean = false
+  autoShowYakuAndFu : boolean = false
   checkOnlyHanAndFu : boolean = false
   carelessly : boolean = false
+  showPoints : boolean = false
 }

@@ -84,8 +84,8 @@
     sp.answers.fuIsRight = (hv.fu === parseInt(inputAnswer.value.fu))
     sp.answers.points = ((!hv.isDealer && hv.isTsumo) ? (points.fromDealer.toString() + "/") : "") +  points.fromNonDealer.toString();
     sp.answers.pointsIsRight = ((sp.answers.points === inputAnswer.value.points) || trainingSettings.value.checkOnlyHanAndFu)
-    sp.tipButton = !trainingSettings.value.autoshowYakuAndFu
-    sp.tip = trainingSettings.value.autoshowYakuAndFu
+    sp.tipButton = !trainingSettings.value.autoShowYakuAndFu
+    sp.tip = trainingSettings.value.autoShowYakuAndFu
     sp.checkButton = false
     sp.inputDisabled = true
   }
@@ -152,13 +152,16 @@
         <UButton v-if="showParameters.tipButton" class="mx-4 mt-4" color="secondary" @click="showTip">{{ $t('show_tip') }}</UButton>
         <UButton class="mx-4 mt-4" loading-auto color="secondary" @click="getNextGameResult">{{ $t('next_hand') }}</UButton>
       </div>
-      <WinningDetails v-if="showParameters.tip" :details="hand.winningDetails" />
+      <WinningDetails v-if="showParameters.tip" :details="hand.winningDetails" :show-points="trainingSettings.showPoints" :points="showParameters.answers.points" />
       <div class="pt-4 mx-auto w-fit">
         <div>
           <span class="font-semibold"><UIcon name="i-lucide-settings" /> {{ $t('settings') }}</span>
         </div>
         <div>
-          <UCheckbox v-model="trainingSettings.autoshowYakuAndFu" :label="$t('settings_autoyaku')" @update:model-value="saveTrainingSettings" />
+          <UCheckbox v-model="trainingSettings.autoShowYakuAndFu" :label="$t('settings_autoyaku')" @update:model-value="saveTrainingSettings" />
+        </div>
+        <div>
+          <UCheckbox v-model="trainingSettings.showPoints" :label="$t('settings_show_points')" @update:model-value="saveTrainingSettings" />
         </div>
         <div>
           <UCheckbox v-model="trainingSettings.checkOnlyHanAndFu" :label="$t('settings_check_only_han_and_fu')" @update:model-value="saveTrainingSettings" />
