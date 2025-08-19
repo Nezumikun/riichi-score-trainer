@@ -20,5 +20,6 @@
 <style scoped>
 nav {
   background-color: teal;
+  z-index: 1000;
 }
 </style>

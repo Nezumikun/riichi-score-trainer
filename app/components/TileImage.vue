@@ -13,9 +13,8 @@ const props = defineProps({
 function getCssClasses() : string[] {
   const cssClasses = []
   if (props.carelessly) {
-    if (Math.random() >= 0.5) {
+    if (Math.random() >= 0.8) {
       cssClasses.push('carelessly')
-      console.log('carelessly')
     }
   }
   return cssClasses
