@@ -8,7 +8,7 @@
         <div class="flex space-x-7">
           <NuxtLinkLocale to="/" class="flex items-center py-4 px-2">
             <span class="font-semibold text-lg">
-              Подсчёт руки в риичи
+              {{ $t('site_title') }}
             </span>
           </NuxtLinkLocale>
         </div>
