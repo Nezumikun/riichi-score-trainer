@@ -87,5 +87,6 @@
     "settings_autoyaku": "Автоматически показывать расшифровку хан и фу",
     "settings_check_only_han_and_fu": "Проверять только хан и фу",
     "settings_carelessly": "Небрежная ориентация костей",
-    "settings_show_points": "Показывать в расшифровке выплату"
+    "settings_show_points": "Показывать в расшифровке выплату",
+    "page_about": "О сайте"
 }

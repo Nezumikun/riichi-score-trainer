@@ -6,11 +6,11 @@
     <div class="max-w-6xl mx-auto px-4">
       <div class="flex justify-between">
         <div class="flex space-x-7">
-          <a href="#" class="flex items-center py-4 px-2">
+          <NuxtLinkLocale to="/" class="flex items-center py-4 px-2">
             <span class="font-semibold text-lg">
               Подсчёт руки в риичи
             </span>
-          </a>
+          </NuxtLinkLocale>
         </div>
       </div>
     </div>
