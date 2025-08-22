@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { LocaleObject } from '@nuxtjs/i18n'
-import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 const nuxtApp = useNuxtApp()
 const router = useRouter()

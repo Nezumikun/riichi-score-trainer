@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useTemplateRef, onMounted } from 'vue'
+  const nuxtApp = useNuxtApp()
 
   class ShowParametersAnswers {
     han : string = "";
@@ -48,16 +49,23 @@
   const inputFu = useTemplateRef("inputFu")
   const inputPoints = useTemplateRef("inputPoints")
 
+  nuxtApp.hook('i18n:beforeLocaleSwitch', () => {
+    sessionStorage.setItem('hand', JSON.stringify(tenhouHandRequest.value))
+  })
+
   onMounted(async () => {
     const settings = localStorage.getItem('training_settings')
     if (settings !== null) {
       trainingSettings.value = JSON.parse(settings)
     }
-    await getNextGameResult()
+    const item = sessionStorage.getItem('hand')
+    const thr = (item !== null) ? JSON.parse(item) as TenhouHandRequest : null
+    await getNextGameResult(thr)
   })
   
-  async function getNextGameResult() : Promise<void> {
-    const fetchData = await $fetch<TenhouHandRequest>('/api/getRandomTehnouHand')
+  async function getNextGameResult(thr : TenhouHandRequest | null) : Promise<void> {
+    const fetchData = (thr !== null) ? thr : await $fetch<TenhouHandRequest>('/api/getRandomTehnouHand')
+    sessionStorage.removeItem('hand')
     tenhouHandRequest.value = fetchData
     if (fetchData.tenhouHand !== null) {
       hand.value.parseTehnouHandRequest(fetchData)
@@ -160,7 +168,7 @@
         <div>
           <UCheckbox v-model="trainingSettings.autoShowYakuAndFu" :label="$t('settings_autoyaku')" @update:model-value="saveTrainingSettings" />
         </div>
-        <div>
+        <div v-if="trainingSettings.checkOnlyHanAndFu">
           <UCheckbox v-model="trainingSettings.showPoints" :label="$t('settings_show_points')" @update:model-value="saveTrainingSettings" />
         </div>
         <div>
