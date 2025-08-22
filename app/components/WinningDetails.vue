@@ -1,7 +1,18 @@
 <script setup lang="ts">
-const props = defineProps<{
-  details : WinningDetails
-}>()
+const props = defineProps({
+  details: {
+    type: WinningDetails,
+    default: new WinningDetails()
+  },
+  showPoints: {
+    type: Boolean,
+    default: false
+  },
+  points: {
+    type: String,
+    default: ''
+  }
+})
 </script>
 
 <template>
@@ -33,6 +44,9 @@ const props = defineProps<{
     </div>
     <div v-if="props.details.limitHand !== false" class="col-span-2 text-center">
       {{ $t("limit_" + props.details.limitHand) }}
+    </div>
+    <div v-if="props.showPoints" class="col-span-2 text-center">
+      {{ $t("Points") }}: {{ props.points }}
     </div>
   </div>
 </template>

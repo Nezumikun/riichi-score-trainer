@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <div class="flex flex-col h-screen justify-between">
+    <YandexMetrika />
     <NavBar />
-    <UContainer class="pb-30 pt-2">
+    <UContainer class="pb-20 pt-20 mb-auto">
       <slot />
     </UContainer>
+    <PageFooter />
   </div>
 </template>

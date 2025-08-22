@@ -1,11 +1,30 @@
 <script setup lang="ts">
-const props = defineProps<{
-  tile : Tile
-}>()
+const props = defineProps({
+  tile : {
+    type: Tile,
+    default: new Tile('', '')
+  },
+  carelessly : {
+    type: Boolean,
+    default: false
+  }
+})
+
+function getCssClasses() : string[] {
+  const cssClasses = []
+  if (props.carelessly) {
+    if (Math.random() >= 0.8) {
+      cssClasses.push('carelessly')
+    }
+  }
+  return cssClasses
+}
 </script>
 
 <template>
-  <img :src="props.tile.getImageName()" :class="props.tile.getCssClasses()">
+  <span :class="getCssClasses()">
+    <img :src="props.tile.getImageName()" :class="props.tile.getCssClasses()">
+  </span>
 </template>
 
 <style scoped>
@@ -20,14 +39,28 @@ const props = defineProps<{
       width: 70px;
     }
   } 
+  .winning-parameters img.tile {
+    @media (width >= 64rem) {
+      width: 50px;
+    }
+  } 
   img.tile-called {
     transform: rotate(90deg) translate(12%) scale(0.99);
     margin-left: 6px;
     margin-right: 6px;
     @media (width >= 64rem) {
-      transform: rotate(90deg) translate(17%);
+      transform: rotate(90deg) translate(17%) scale(0.99);
       margin-left: 10px;
       margin-right: 10px;
+    }
+  }
+  .carelessly img.tile {
+    transform: rotate(180deg) scale(1);
+  }
+  .carelessly img.tile-called {
+    transform: rotate(270deg) translate(-12%) scale(.99);
+    @media (width >= 64rem) {
+      transform: rotate(270deg) translate(-17%) scale(.99);
     }
   }
   img.tile-promoted {
@@ -40,12 +73,5 @@ const props = defineProps<{
   .dora-list img {
     margin-left: 5px;
     margin-right: 5px;
-  }
-  div.melds {
-    padding-left: 10px;
-    display: inline-block;
-  }
-  div.hand {
-    display: inline-block;
   }
 </style>

@@ -2,7 +2,7 @@ services:
   nuxt-app:
     build: .
     container_name: riichi-scoring-trainer-app
-    restart: always
+    restart: unless-stopped
     ports:
       - "3000:80"
     networks:

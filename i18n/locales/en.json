@@ -30,6 +30,8 @@
     "riichi_option": "Riichi",
     "tsumo_option": "Tsumo",
     "next_hand": "Next Hand",
+    "check_answer": "Check",
+    "show_tip": "Tips",
     "yaku_tsumo": "Tsumo",
     "yaku_riichi": "Riichi",
     "yaku_ippatsu": "Ippatsu",
@@ -78,6 +80,13 @@
     "limit_haneman": "Haneman",
     "limit_baiman": "Baiman", 
     "limit_sanbaiman": "Sanbaiman",
-    "limit_yakuman": "Yakuman"
-
+    "limit_yakuman": "Yakuman",
+    "tooltip_points": "points format from dealer/nondealer",
+    "settings": "Settings",
+    "settings_autoyaku": "Autoshow han and fu deatils",
+    "settings_check_only_han_and_fu": "Check only han and fu",
+    "settings_carelessly": "Carelessly tail orientaion",
+    "settings_show_points": "Show points in detail",
+    "page_about": "About",
+    "site_title": "Riichi Scoring Trainer"
 }
