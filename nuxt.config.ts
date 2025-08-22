@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     strategy: 'prefix_and_default',
     locales: [
       { code: 'en', name: 'English', file: 'en.json' },
-      { code: 'ru', name: 'Russian', file: 'ru.json' }
+      { code: 'ru', name: 'Русский', file: 'ru.json' }
     ]
   },
   css: ['~/assets/css/main.css']
