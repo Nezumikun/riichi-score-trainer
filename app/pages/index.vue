@@ -158,7 +158,7 @@
       <div class="text-center w-full">
         <UButton v-if="showParameters.checkButton" class="mx-4 mt-4" color="secondary" @click="checkAnswer">{{ $t('check_answer') }}</UButton>
         <UButton v-if="showParameters.tipButton" class="mx-4 mt-4" color="secondary" @click="showTip">{{ $t('show_tip') }}</UButton>
-        <UButton class="mx-4 mt-4" loading-auto color="secondary" @click="getNextGameResult">{{ $t('next_hand') }}</UButton>
+        <UButton class="mx-4 mt-4" loading-auto color="secondary" @click="() => getNextGameResult(null)">{{ $t('next_hand') }}</UButton>
       </div>
       <WinningDetails v-if="showParameters.tip" :details="hand.winningDetails" :show-points="trainingSettings.showPoints" :points="showParameters.answers.points" />
       <div class="pt-4 mx-auto w-fit">
