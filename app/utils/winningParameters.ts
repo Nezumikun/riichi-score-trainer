@@ -5,6 +5,7 @@ export class WinningParameters {
   uraDoraIndicators : Tile[] = [];
   isRiichi : boolean = false;
   isTsumo : boolean = false;
+  honbaSticks : number = 0;
 
   parseTenhouHand(tenhouHand : TenhouHand) : void {
     this.roundWind = Tile.parseWindOfRound(tenhouHand.roundWind)
@@ -19,5 +20,6 @@ export class WinningParameters {
     }
     this.isRiichi = tenhouHand.isRiichi
     this.isTsumo = tenhouHand.isTsumo
+    this.honbaSticks = tenhouHand.honbaSticks
   }
 }

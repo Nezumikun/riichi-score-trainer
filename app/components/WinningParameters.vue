@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import TileImage from './TileImage.vue';
 
-const props = defineProps<{
-  parameters : WinningParameters
-}>()
+const props = defineProps({
+  parameters : {
+    type: WinningParameters,
+    default: new WinningParameters()
+  },
+  includeHonba : {
+    type: Boolean,
+    default: false
+  }
+})
 </script>
 
 
@@ -26,6 +33,9 @@ const props = defineProps<{
       <div class="grid grid-cols-1">
         <div>{{ $t("riichi_option") }}: {{ props.parameters.isRiichi ? $t("yes") : $t("no") }}</div>
         <div>{{ $t("tsumo_option") }}: {{ props.parameters.isTsumo ? $t("yes") : $t("no") }}</div>
+        <div v-if="props.includeHonba">
+          {{ $t("honba_option") }}: {{ props.parameters.honbaSticks }}
+        </div>
       </div>
     </div>
     <div class="col-span-3 lg:col-span-1">

@@ -21,6 +21,7 @@
     "han": "хан",
     "Yaku": "Яку",
     "Points": "Выплата",
+    "Points_include_honba": "С учётом хонбы",
     "no": "нет",
     "yes": "да",
     "wind_of_round": "Ветер раунда",
@@ -30,6 +31,7 @@
     "winning_parameters": "Параметры выигрыша",
     "riichi_option": "Риичи",
     "tsumo_option": "Цумо",
+    "honba_option": "Хонба",
     "next_hand": "Дальше",
     "check_answer": "Проверить",
     "show_tip": "Подсказка",
@@ -88,6 +90,7 @@
     "settings_check_only_han_and_fu": "Проверять только хан и фу",
     "settings_carelessly": "Небрежная ориентация костей",
     "settings_show_points": "Показывать в расшифровке выплату",
+    "settings_include_honba": "Учитывать хонбу",
     "page_about": "О сайте",
     "site_title": "Подсчёт руки в риичи"
 }

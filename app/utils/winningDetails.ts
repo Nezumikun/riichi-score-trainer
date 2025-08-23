@@ -6,6 +6,7 @@ export class WinningDetails {
   yaku: Yaku[] = [];
   isDealer: boolean = false;
   isTsumo: boolean = false;
+  honbaSticks : number = 0;
   limitHand: "mangan" | "haneman" | "baiman" | "sanbaiman" | "yakuman" | false = false;
 
   parseTenhouHand(tenhouHand: TenhouHand): void {
@@ -26,6 +27,7 @@ export class WinningDetails {
     }
     this.isDealer = tenhouHand.isDealer;
     this.isTsumo = tenhouHand.isTsumo;
+    this.honbaSticks = tenhouHand.honbaSticks;
     if (this.han >= 13) this.limitHand = "yakuman";
     else if (this.han >= 11) this.limitHand = "sanbaiman";
     else if (this.han >= 8) this.limitHand = "baiman";
@@ -45,7 +47,7 @@ export class WinningDetails {
     return points;
   }
 
-  getHandPoints(): HandPoints {
+  getHandPoints(includeHonba : boolean = false): HandPoints {
     const result: HandPoints = { fromNonDealer: 0, fromDealer: 0 };
     if (this.isDealer) {
       if (this.isTsumo) {
@@ -138,6 +140,20 @@ export class WinningDetails {
         }
       }
     }
+    if (includeHonba && (this.honbaSticks > 0)) {
+      if (this.isTsumo) {
+        result.fromDealer += 100 * this.honbaSticks;
+        result.fromNonDealer += 100 * this.honbaSticks;
+      } else {
+        result.fromNonDealer += 300 * this.honbaSticks;
+        result.fromDealer += 300 * this.honbaSticks;
+      }
+    }
     return result;
+  }
+
+  getHandPointsAsString(includeHonba : boolean = false) : string {
+    const points = this.getHandPoints(includeHonba)
+    return ((!this.isDealer && this.isTsumo) ? (points.fromDealer.toString() + "/") : "") +  points.fromNonDealer.toString()
   }
 }

@@ -10,7 +10,7 @@
                   </NuxtLinkLocale>
               </span>
               <span class="flex items-center flex-no-shrink">
-                <ULink to="https://github.com/Nezumikun/riichi-scoring-trainer">
+                <ULink to="https://github.com/Nezumikun/riichi-scoring-trainer" target="_blank">
                   <UAvatar icon="i-lucide-github" size="xl" />
                 </ULink>
               </span>

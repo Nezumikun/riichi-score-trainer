@@ -11,6 +11,10 @@ const props = defineProps({
   points: {
     type: String,
     default: ''
+  },
+  pointsIncludeHonba: {
+    type: String,
+    default: ''
   }
 })
 </script>
@@ -46,7 +50,12 @@ const props = defineProps({
       {{ $t("limit_" + props.details.limitHand) }}
     </div>
     <div v-if="props.showPoints" class="col-span-2 text-center">
-      {{ $t("Points") }}: {{ props.points }}
+      <div>
+        {{ $t("Points") }}: {{ props.points }}
+      </div>
+      <div v-if="props.pointsIncludeHonba !== ''">
+        {{ $t("Points_include_honba") }}: {{ props.pointsIncludeHonba }}
+      </div>
     </div>
   </div>
 </template>

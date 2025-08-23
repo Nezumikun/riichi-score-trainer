@@ -20,6 +20,8 @@
     "Han": "Han",
     "han": "han",
     "Yaku": "Yaku",
+    "Points": "Points",
+    "Points_include_honba": "Include honba",
     "no": "no",
     "yes": "yes",
     "wind_of_round": "Wind of Round",
@@ -29,6 +31,7 @@
     "winning_parameters": "Winning Parameters",
     "riichi_option": "Riichi",
     "tsumo_option": "Tsumo",
+    "honba_option": "Honba",
     "next_hand": "Next Hand",
     "check_answer": "Check",
     "show_tip": "Tips",
@@ -87,6 +90,7 @@
     "settings_check_only_han_and_fu": "Check only han and fu",
     "settings_carelessly": "Carelessly tail orientaion",
     "settings_show_points": "Show points in detail",
+    "settings_include_honba": "Include honba sticks",
     "page_about": "About",
     "site_title": "Riichi Scoring Trainer"
 }
